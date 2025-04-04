@@ -1,5 +1,6 @@
 /** @format */
 
+import { useEffect } from "react";
 import { useMovieContext } from "../../context/MovieContext";
 import { MovieItem } from "../movieItem";
 
@@ -16,10 +17,13 @@ export const MoviesList = () => {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    fetchMovies();
     // Scroll to top of page when changing pages
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  useEffect(() => {
+    fetchMovies();
+  }, [currentPage]);
 
   if (loading) {
     return (
@@ -122,7 +126,6 @@ export const MoviesList = () => {
               disabled={currentPage === 1}
               className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <span className="sr-only">Previous</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -166,7 +169,6 @@ export const MoviesList = () => {
               disabled={currentPage === totalPages}
               className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <span className="sr-only">Next</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"

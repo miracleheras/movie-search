@@ -68,6 +68,7 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
         limit: 1,
       });
       setTotalResults(response2.totalPages);
+      console.log("currentPage: ", currentPage);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
