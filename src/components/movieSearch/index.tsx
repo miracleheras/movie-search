@@ -10,6 +10,8 @@ export const MovieSearch = () => {
     selectedGenre,
     setSelectedGenre,
     fetchMovies,
+    limit,
+    setLimit,
     loading,
     totalResults,
     setCurrentPage,
@@ -136,6 +138,24 @@ export const MovieSearch = () => {
                     />
                   </svg>
                 </div>
+              </div>
+            </div>
+            <div className="flex-grow">
+              <label
+                htmlFor="number"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Movies Number Per Page
+              </label>
+              <div className="relative rounded-md shadow-sm">
+                <input
+                  id="number"
+                  type="text"
+                  placeholder="Number of Movies in one page"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  value={limit}
+                  onChange={(e) => setLimit(Number(e.target.value))}
+                />
               </div>
             </div>
           </div>

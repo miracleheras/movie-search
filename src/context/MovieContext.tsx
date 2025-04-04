@@ -16,6 +16,8 @@ interface MovieContextType {
   setSearch: (search: string) => void;
   selectedGenre: MovieGenre | "";
   setSelectedGenre: (genre: MovieGenre | "") => void;
+  limit: number;
+  setLimit: (limit: number) => void;
   movies: Movie[];
   loading: boolean;
   error: string | null;
@@ -39,6 +41,7 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [totalResults, setTotalResults] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(25);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -56,7 +59,7 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
         search: search,
         genre: selectedGenre as MovieGenre,
         page: currentPage,
-        limit: 10,
+        limit: limit,
       });
       setMovies(response1.data);
       setTotalPages(response1.totalPages);
@@ -68,7 +71,6 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
         limit: 1,
       });
       setTotalResults(response2.totalPages);
-      console.log("currentPage: ", currentPage);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -83,6 +85,8 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
         setSearch,
         selectedGenre,
         setSelectedGenre,
+        limit,
+        setLimit,
         movies,
         loading,
         error,
