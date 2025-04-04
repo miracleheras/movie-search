@@ -1,7 +1,6 @@
 import { render, screen, waitFor, act } from '@testing-library/react'
 import { MovieProvider, useMovieContext } from '../../context/MovieContext'
 import { mockMovies } from '../__mocks__/apiMocks'
-import React from 'react'
 import fetchMock from 'jest-fetch-mock'
 
 // Enable fetchMock

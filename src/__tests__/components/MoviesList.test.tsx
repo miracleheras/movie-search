@@ -1,10 +1,9 @@
-import { screen, waitFor } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { render } from '../test-utils'
 import { MoviesList } from '../../components/moviesList'
 import { mockMovies } from '../__mocks__/apiMocks'
 import { useMovieContext } from '../../context/MovieContext'
-import { BrowserRouter } from 'react-router-dom'
 
 // Mock the movie context
 jest.mock('../../context/MovieContext', () => {
