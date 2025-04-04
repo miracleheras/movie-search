@@ -7,23 +7,10 @@ import { Movie } from "../types";
 import { getToken } from "../services/api";
 import { API_BASE_URL } from "../consts";
 
-interface MovieDetail extends Movie {
-  bestRating?: number;
-  datePublished?: string;
-  directors?: string[];
-  duration?: string;
-  genres?: Array<{ title: string }>;
-  mainActors?: string[];
-  ratingValue?: number;
-  summary?: string;
-  worstRating?: number;
-  writers?: string[];
-}
-
 export const MovieDetailPage: React.FC = withMainLayout(() => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [movie, setMovie] = useState<MovieDetail | null>(null);
+  const [movie, setMovie] = useState<Movie | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 

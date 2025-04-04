@@ -7,15 +7,14 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
-import { MovieGenre } from "../consts";
 import { getMovies, getToken } from "../services/api";
 import { Movie } from "../types";
 
 interface MovieContextType {
   search: string;
   setSearch: (search: string) => void;
-  selectedGenre: MovieGenre | "";
-  setSelectedGenre: (genre: MovieGenre | "") => void;
+  selectedGenre: string;
+  setSelectedGenre: (genre: string) => void;
   limit: number;
   setLimit: (limit: number) => void;
   movies: Movie[];
@@ -34,7 +33,7 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [search, setSearch] = useState<string>("");
-  const [selectedGenre, setSelectedGenre] = useState<MovieGenre | "">("");
+  const [selectedGenre, setSelectedGenre] = useState<string>("");
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -57,7 +56,7 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
       }
       const response1 = await getMovies(token, {
         search: search,
-        genre: selectedGenre as MovieGenre,
+        genre: selectedGenre,
         page: currentPage,
         limit: limit,
       });
@@ -66,7 +65,7 @@ export const MovieProvider: React.FC<{ children: ReactNode }> = ({
 
       const response2 = await getMovies(token, {
         search: search,
-        genre: selectedGenre as MovieGenre,
+        genre: selectedGenre,
         page: currentPage,
         limit: 1,
       });

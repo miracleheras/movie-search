@@ -1,5 +1,4 @@
 import { getToken, getMovies } from '../../services/api'
-import { MovieGenre } from '../../consts'
 import { API_BASE_URL } from '../../consts/url'
 
 // Mock fetch
@@ -38,7 +37,7 @@ describe('API Service', () => {
         page: 1,
         limit: 10,
         search: 'test movie',
-        genre: MovieGenre.ACTION
+        genre: 'Action'
       }
 
       const mockResponse = {
@@ -56,7 +55,7 @@ describe('API Service', () => {
       expect(result).toEqual(mockResponse)
       expect(global.fetch).toHaveBeenCalledTimes(1)
       expect(global.fetch).toHaveBeenCalledWith(
-        `${API_BASE_URL}/movies?page=1&limit=10&search=test+movie&genre=${MovieGenre.ACTION}`,
+        `${API_BASE_URL}/movies?page=1&limit=10&search=test+movie&genre=Action`,
         expect.objectContaining({
           headers: {
             Authorization: `Bearer ${mockToken}`

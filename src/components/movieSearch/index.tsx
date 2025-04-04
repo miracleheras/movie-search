@@ -1,8 +1,9 @@
 /** @format */
 
-import { MovieGenre } from "../../consts";
 import { useMovieContext } from "../../context/MovieContext";
-
+import { useEffect, useState } from "react";
+import { getGenres } from "../../services/api";
+import { getToken } from "../../services/api";
 export const MovieSearch = () => {
   const {
     search,
@@ -17,6 +18,22 @@ export const MovieSearch = () => {
     setCurrentPage,
   } = useMovieContext();
 
+  const [genres, setGenres] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchGenres = async () => {
+      const token = localStorage.getItem("token") || (await getToken());
+      if (!token) {
+        throw new Error("Failed to get token");
+      }
+      const genresResponse = await getGenres(token);
+      // Extract just the titles from the response data
+      const genreTitles = genresResponse.data.map((genre: any) => genre.title);
+      setGenres(genreTitles);
+    };
+    fetchGenres();
+  }, []);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setCurrentPage(1);
@@ -24,7 +41,7 @@ export const MovieSearch = () => {
   };
 
   const handleGenreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedGenre(e.target.value as MovieGenre);
+    setSelectedGenre(e.target.value);
   };
 
   return (
@@ -100,8 +117,8 @@ export const MovieSearch = () => {
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-10 appearance-none"
                 >
                   <option value="">All Genres</option>
-                  {Object.values(MovieGenre).map((genre) => (
-                    <option key={genre} value={genre}>
+                  {genres && genres.length > 0 && genres.map((genre, index) => (
+                    <option key={index} value={genre}>
                       {genre}
                     </option>
                   ))}
@@ -145,26 +162,60 @@ export const MovieSearch = () => {
                 htmlFor="number"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Movies Number Per Page
+                Number
               </label>
               <div className="relative rounded-md shadow-sm">
-                <input
+                <select
                   id="number"
-                  type="text"
-                  placeholder="Number of Movies in one page"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-10 appearance-none"
                   value={limit}
                   onChange={(e) => setLimit(Number(e.target.value))}
-                />
+                >
+                  <option value={20}>20</option>
+                  <option value={25}>25</option>
+                  <option value={30}>30</option>
+                  <option value={35}>35</option>
+                  <option value={40}>40</option>
+                </select>
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                    />
+                  </svg>
+                </div>
+                <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="flex justify-end">
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              className="px-6 py-5 my-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
               {loading ? (
                 <>
@@ -210,7 +261,7 @@ export const MovieSearch = () => {
                 </>
               )}
             </button>
-          </div>
+            </div>
         </form>
 
         {totalResults > 0 && (

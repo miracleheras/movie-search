@@ -2,7 +2,7 @@
 
 import { MovieGenre } from "../consts";
 
-export type getMovieType = {
+export type getMoviesType = {
   page?: number;
   limit?: number;
   search?: string;

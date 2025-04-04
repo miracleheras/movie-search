@@ -3,12 +3,7 @@
 import { Movie } from "../../types";
 import { useNavigate } from "react-router-dom";
 
-interface MovieWithRating extends Movie {
-  ratingValue?: number;
-  bestRating?: number;
-}
-
-export const MovieItem = ({ movie }: { movie: MovieWithRating }) => {
+export const MovieItem = ({ movie }: { movie: Movie }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {

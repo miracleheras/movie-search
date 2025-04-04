@@ -48,7 +48,7 @@ describe('MovieSearch Component', () => {
     expect(screen.getByText('Search Movies')).toBeInTheDocument()
     expect(screen.getByLabelText('Title')).toBeInTheDocument()
     expect(screen.getByLabelText('Genre')).toBeInTheDocument()
-    expect(screen.getByLabelText('Movies Number Per Page')).toBeInTheDocument()
+    expect(screen.getByLabelText('Number')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /search/i })).toBeInTheDocument()
   })
 
@@ -74,18 +74,18 @@ describe('MovieSearch Component', () => {
     render(<MovieSearch />)
     
     const genreSelect = screen.getByLabelText('Genre')
-    fireEvent.change(genreSelect, { target: { value: 'Action' } })
+    fireEvent.change(genreSelect, { target: { value: '' } })
     
-    expect(mockSetSelectedGenre).toHaveBeenCalledWith('Action')
+    expect(mockSetSelectedGenre).toHaveBeenCalledWith('')
   })
 
   test('calls setLimit when limit input changes', () => {
     render(<MovieSearch />)
     
-    const limitInput = screen.getByLabelText('Movies Number Per Page')
-    fireEvent.change(limitInput, { target: { value: '50' } })
+    const limitInput = screen.getByLabelText('Number')
+    fireEvent.change(limitInput, { target: { value: '20' } })
     
-    expect(mockSetLimit).toHaveBeenCalledWith(50)
+    expect(mockSetLimit).toHaveBeenCalledWith(20)
   })
 
   test('submits form and calls fetchMovies', async () => {
